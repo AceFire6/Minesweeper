@@ -2,6 +2,7 @@ JFLAGS = -g -classpath $(CLASSPATH)
 JC = javac
 CLASSPATH = ./src/
 JAR_DIR = ./jar/
+NATIVE_BUILDS_DIR = ./builds/
 MANIFEST = $(CLASSPATH)MANIFEST.MF
 MAIN_CLASS = Minesweeper
 NAME = Minesweeper
@@ -39,7 +40,22 @@ $(JAR_DIR)$(NAME).jar: classes manifest
 	@echo Moving $(NAME).jar to $(JAR_DIR)
 	@mv $(CLASSPATH)$(NAME).jar $(JAR_DIR)
 
-jar: $(JAR_DIR)$(NAME).jar 
+jar: $(JAR_DIR)$(NAME).jar
+
+package-native: jar
+	@if [ ! -d $(NATIVE_BUILDS_DIR) ]; then\
+		@echo Creating native builds dir $(NATIVE_BUILDS_DIR);\
+		mkdir $(NATIVE_BUILDS_DIR);\
+	fi
+	@echo Creating native package
+	@jpackage \
+		--input . \
+		--main-class $(MAIN_CLASS) \
+		--main-jar $(JAR_DIR)$(NAME).jar \
+		--name $(NAME) \
+		--icon "./minesweeper-title.png" \
+		--description "Minecraft themed minesweeper clone" \
+		--about-url https://github.com/AceFire6/Minesweeper
 
 run: classes
 	@echo Running $(MAIN_CLASS)...;
