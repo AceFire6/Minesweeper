@@ -12,7 +12,16 @@ CLASSES = \
 	MinesweeperGUI.java \
 	MyButton.java
 
-.PHONY: classes manifest jar run run-jar clean clean-all clean-manifest clean-jar
+PACKAGE_COMMAND = jpackage \
+		--input . \
+		--main-class $(MAIN_CLASS) \
+		--main-jar $(JAR_DIR)$(NAME).jar \
+		--name $(NAME) \
+		--description "Minecraft themed minesweeper clone" \
+		--about-url https://github.com/AceFire6/Minesweeper
+
+.PHONY: classes manifest jar run run-jar clean clean-all clean-manifest clean-jar \
+	native-builds-dir prep-package-native package-native-mac package-native-linux package-native-windows
 default: classes
 
 classes: $(addprefix $(CLASSPATH),$(CLASSES:.java=.class))
@@ -42,20 +51,25 @@ $(JAR_DIR)$(NAME).jar: classes manifest
 
 jar: $(JAR_DIR)$(NAME).jar
 
-package-native: jar
+native-builds-dir: 
 	@if [ ! -d $(NATIVE_BUILDS_DIR) ]; then\
 		@echo Creating native builds dir $(NATIVE_BUILDS_DIR);\
 		mkdir $(NATIVE_BUILDS_DIR);\
 	fi
-	@echo Creating native package
-	@jpackage \
-		--input . \
-		--main-class $(MAIN_CLASS) \
-		--main-jar $(JAR_DIR)$(NAME).jar \
-		--name $(NAME) \
-		--icon "./minesweeper-title.png" \
-		--description "Minecraft themed minesweeper clone" \
-		--about-url https://github.com/AceFire6/Minesweeper
+
+prep-package-native: jar native-builds-dir
+
+package-native-linux: prep-package-native
+	@echo Creating native Linux package
+	@$(PACKAGE_COMMAND) --icon "./icons/icon.ico"
+
+package-native-windows: prep-package-native
+	@echo Creating native Windows package
+	@$(PACKAGE_COMMAND) --icon "./icons/icon.ico"
+
+package-native-mac: prep-package-native
+	@echo Creating native Mac package
+	@$(PACKAGE_COMMAND) --icon "./icons/icon.icns"
 
 run: classes
 	@echo Running $(MAIN_CLASS)...;
