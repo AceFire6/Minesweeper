@@ -22,4 +22,6 @@ from a minecraft papercraft net.
 
 ## References
 
-Text images were made using: [textcraft.net](http://textcraft.net/)
+* Text images were made using: [textcraft.net](http://textcraft.net/)
+* Font used to create the logo is "Minecrafter V3"
+by "Asherz08", "MadPixel", "Ashley Denham"
