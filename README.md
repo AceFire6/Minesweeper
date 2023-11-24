@@ -8,6 +8,8 @@ It is minecraft themed which is why the "mines" are creepers, the "flags" are
 signposts and the blocks that are uncovered use a grass texture
 from a minecraft papercraft net.
 
+![Minesweeper game screenshot](./minesweeper.png)
+
 ## Build
 
 1. `make` to compile the Java files
@@ -21,4 +23,3 @@ from a minecraft papercraft net.
 ## References
 
 Text images were made using: [textcraft.net](http://textcraft.net/)
-
