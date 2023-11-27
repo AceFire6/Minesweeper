@@ -45,7 +45,7 @@ manifest: $(MANIFEST)
 
 $(JARFILE_PATH): classes manifest
 	@echo Creating $(JARFILE_NAME);
-	@echo @cd $(CLASSPATH); jar cvfm $(JARFILE_NAME) $(notdir $(MANIFEST)) $(MAIN_CLASS).class *.{class,png,jpg};
+	@echo "@cd $(CLASSPATH); jar cvfm $(JARFILE_NAME) $(notdir $(MANIFEST)) $(MAIN_CLASS).class *.{class,png,jpg};"
 	@cd $(CLASSPATH); jar cvfm $(JARFILE_NAME) $(notdir $(MANIFEST)) $(MAIN_CLASS).class *.{class,png,jpg};
 	
 	@if [ ! -d $(JAR_DIR) ]; then\
