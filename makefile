@@ -21,7 +21,7 @@ PACKAGE_COMMAND = jpackage \
 		--about-url https://github.com/AceFire6/Minesweeper
 
 .PHONY: classes manifest jar run run-jar clean clean-all clean-manifest clean-jar \
-	native-builds-dir prep-package-native package-native-mac package-native-linux package-native-windows
+	native-builds-dir prep-package-native package-native-macos package-native-linux package-native-windows
 default: classes
 
 classes: $(addprefix $(CLASSPATH),$(CLASSES:.java=.class))
@@ -67,8 +67,8 @@ package-native-windows: prep-package-native
 	@echo Creating native Windows package
 	@$(PACKAGE_COMMAND) --icon "./icons/icon.ico"
 
-package-native-mac: prep-package-native
-	@echo Creating native Mac package
+package-native-macos: prep-package-native
+	@echo Creating native MacOS package
 	@$(PACKAGE_COMMAND) --icon "./icons/icon.icns"
 
 run: classes
