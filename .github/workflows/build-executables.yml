@@ -45,17 +45,6 @@ jobs:
           distribution: 'microsoft'
           java-version: '17'
 
-      - name: Sanity Check
-        run: |
-          echo "Java version"
-          java --version
-          echo "JPackage version"
-          jpackage --version
-          echo "Current dir"
-          ls -al .
-          echo "src dir"
-          ls -al ./src/
-
       - name: Install make - Windows
         if: ${{ matrix.os_name == 'Windows' }}
         run: choco install make
@@ -66,6 +55,17 @@ jobs:
 
       - name: Build Jar
         run: make jar
+
+      - name: Sanity Check
+        run: |
+          echo "Java version"
+          java --version
+          echo "JPackage version"
+          jpackage --version
+          echo "Current dir"
+          ls -al .
+          echo "src dir"
+          ls -al ./src/
 
       - name: Build Native Executable
         run: make package-native-${{ matrix.command_name }}
