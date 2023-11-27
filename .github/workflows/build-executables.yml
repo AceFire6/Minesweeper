@@ -1,4 +1,5 @@
 name: Build Native Executables
+run-name: Build Native Executables - Minesweeper@v${{ inputs.version }}
 
 permissions:
   contents: read
