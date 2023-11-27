@@ -2,12 +2,14 @@ JFLAGS = -g -classpath $(CLASSPATH)
 JC = javac
 CLASSPATH = ./src/
 JAR_DIR = ./jar/
-# Default to 1.0 if APP_VERSION isn't set
+NAME = Minesweeper
 APP_VERSION ?= 1.0
+JARFILE_NAME = $(NAME)-$(APP_VERSION).jar
+JARFILE_PATH = $(JAR_DIR)$(JARFILE_NAME)
+# Default to 1.0 if APP_VERSION isn't set
 NATIVE_BUILDS_DIR = ./builds/
 MANIFEST = $(CLASSPATH)MANIFEST.MF
 MAIN_CLASS = Minesweeper
-NAME = Minesweeper
 
 CLASSES = \
 	Minesweeper.java \
@@ -17,7 +19,7 @@ CLASSES = \
 PACKAGE_COMMAND = jpackage \
 		--input . \
 		--main-class $(MAIN_CLASS) \
-		--main-jar $(JAR_DIR)$(NAME).jar \
+		--main-jar $(JARFILE_PATH) \
 		--dest $(NATIVE_BUILDS_DIR) \
 		--app-version $(APP_VERSION) \
 		--name $(NAME) \
@@ -41,19 +43,19 @@ $(MANIFEST):
 
 manifest: $(MANIFEST)
 
-$(JAR_DIR)$(NAME).jar: classes manifest
-	@echo Creating $(NAME).jar;
-	@cd $(CLASSPATH); jar cvfm $(NAME).jar $(notdir $(MANIFEST)) $(MAIN_CLASS).class *.{class,png,jpg};
+$(JARFILE_PATH): classes manifest
+	@echo Creating $(JARFILE_NAME);
+	@cd $(CLASSPATH); jar cvfm $(JARFILE_NAME) $(notdir $(MANIFEST)) $(MAIN_CLASS).class *.{class,png,jpg};
 	
 	@if [ ! -d $(JAR_DIR) ]; then\
 		echo Making directory $(JAR_DIR);\
 		mkdir $(JAR_DIR);\
 	fi
 	
-	@echo Moving $(NAME).jar to $(JAR_DIR)
-	@mv $(CLASSPATH)$(NAME).jar $(JAR_DIR)
+	@echo Moving $(JARFILE_NAME) to $(JAR_DIR)
+	@mv $(CLASSPATH)$(JARFILE_NAME) $(JAR_DIR)
 
-jar: $(JAR_DIR)$(NAME).jar
+jar: $(JARFILE_PATH)
 
 native-builds-dir: 
 	@if [ ! -d $(NATIVE_BUILDS_DIR) ]; then\
@@ -84,8 +86,8 @@ run: classes
 	@echo Closing...;
 
 run-jar:
-	@if [ -f $(JAR_DIR)$(NAME).jar ]; then\
-		java -jar $(JAR_DIR)$(NAME).jar;\
+	@if [ -f $(JARFILE_PATH) ]; then\
+		java -jar $(JARFILE_PATH);\
 	else\
 		echo You must run make jar first.;\
 	fi
