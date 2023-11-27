@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Executable version
+        description: Executable version. Follows SemVer
         required: true
         type: string
 
@@ -30,6 +30,9 @@ jobs:
     name: Build Native - ${{ matrix.os_name }}
     runs-on: ${{ matrix.runner_name }}
     timeout-minutes: 30
+
+    env:
+      APP_VERSION: ${{ inputs.version }}
 
     steps:
       - name: Checkout code
@@ -54,3 +57,12 @@ jobs:
 
       - name: Build Native Executable
         run: make package-native-${{ matrix.command_name }}
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Minesweeper v${{ env.APP_VERSION }}
+          if-no-files-found: error
+          path: |
+            jar/Minesweeper-${{ env.APP_VERSION }}.jar
+            builds/
