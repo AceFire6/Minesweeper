@@ -17,9 +17,9 @@ CLASSES = \
 	MyButton.java
 
 PACKAGE_COMMAND = jpackage \
-		--input . \
+		--input $(JAR_DIR) \
 		--main-class $(MAIN_CLASS) \
-		--main-jar $(JARFILE_PATH) \
+		--main-jar $(JARFILE_NAME) \
 		--dest $(NATIVE_BUILDS_DIR) \
 		--app-version $(APP_VERSION) \
 		--name $(NAME) \
