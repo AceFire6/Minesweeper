@@ -2,6 +2,8 @@ JFLAGS = -g -classpath $(CLASSPATH)
 JC = javac
 CLASSPATH = ./src/
 JAR_DIR = ./jar/
+# Default to 1.0 if APP_VERSION isn't set
+APP_VERSION ?= 1.0
 NATIVE_BUILDS_DIR = ./builds/
 MANIFEST = $(CLASSPATH)MANIFEST.MF
 MAIN_CLASS = Minesweeper
@@ -16,6 +18,8 @@ PACKAGE_COMMAND = jpackage \
 		--input . \
 		--main-class $(MAIN_CLASS) \
 		--main-jar $(JAR_DIR)$(NAME).jar \
+		--dest $(NATIVE_BUILDS_DIR) \
+		--app-version $(APP_VERSION) \
 		--name $(NAME) \
 		--description "Minecraft themed minesweeper clone" \
 		--about-url https://github.com/AceFire6/Minesweeper
@@ -57,7 +61,10 @@ native-builds-dir:
 		mkdir $(NATIVE_BUILDS_DIR);\
 	fi
 
-prep-package-native: jar native-builds-dir
+output-build-version:
+	@echo Building version $(APP_VERSION)
+
+prep-package-native: jar native-builds-dir output-build-version
 
 package-native-linux: prep-package-native
 	@echo Creating native Linux package
