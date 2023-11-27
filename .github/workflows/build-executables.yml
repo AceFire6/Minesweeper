@@ -1,0 +1,56 @@
+name: Build Native Executables
+
+permissions:
+  contents: read
+  packages: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Executable version
+        required: true
+        type: string
+
+jobs:
+  build-executable:
+    strategy:
+      matrix:
+        include:
+          - os_name: 'Windows'
+            runner_name: 'windows-2022'
+            command_name: 'windows'
+          - os_name: 'Linux'
+            runner_name: 'ubuntu-22.04'
+            command_name: 'linux'
+          - os_name: 'MacOS'
+            runner_name: 'macos-12'
+            command_name: 'macos'
+
+    name: Build Native - ${{ matrix.os_name }}
+    runs-on: ${{ matrix.runner_name }}
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'microsoft'
+          java-version: '17'
+
+      - name: Install make - Windows
+        if: ${{ matrix.os_name == 'Windows' }}
+        run: choco install make
+
+      - name: Install make - MacOS
+        if: ${{ matrix.os_name == 'MacOS' }}
+        run: brew install make
+
+      - name: Build Jar
+        run: make jar
+
+      - name: Build Native Executable
+        run: make package-native-${{ matrix.command_name }}
