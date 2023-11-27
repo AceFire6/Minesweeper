@@ -53,22 +53,6 @@ jobs:
         if: ${{ matrix.os_name == 'MacOS' }}
         run: brew install make
 
-      - name: Build Classes
-        run: make classes
-
-      - name: Sanity Check
-        run: |
-          echo "Make version"
-          make --version
-          echo "Java version"
-          java --version
-          echo "JPackage version"
-          jpackage --version
-          echo "Current dir"
-          ls -al .
-          echo "src dir"
-          ls -al ./src/
-
       - name: Build Jar
         run: make jar
 

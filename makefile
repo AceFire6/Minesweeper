@@ -28,6 +28,7 @@ PACKAGE_COMMAND = jpackage \
 
 .PHONY: classes manifest jar run run-jar clean clean-all clean-manifest clean-jar \
 	native-builds-dir prep-package-native package-native-macos package-native-linux package-native-windows
+
 default: classes
 
 classes: $(addprefix $(CLASSPATH),$(CLASSES:.java=.class))
