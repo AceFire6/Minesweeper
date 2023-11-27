@@ -14,7 +14,35 @@ on:
         type: string
 
 jobs:
-  build-executable:
+  build-upload-jar:
+    name: Build Jar
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    env:
+      APP_VERSION: ${{ inputs.version }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'microsoft'
+          java-version: '17'
+
+      - name: Build Jar
+        run: make jar
+
+      - name: Upload Built Jar File
+        uses: actions/upload-artifact@v3
+        with:
+          name: Minesweeper Jar v${{ env.APP_VERSION }}
+          if-no-files-found: error
+          path: jar/Minesweeper-${{ env.APP_VERSION }}.jar
+
+  build-upload-executable:
     strategy:
       matrix:
         include:
@@ -53,18 +81,8 @@ jobs:
         if: ${{ matrix.os_name == 'MacOS' }}
         run: brew install make
 
-      - name: Build Jar
-        run: make jar
-
       - name: Build Native Executable
         run: make package-native-${{ matrix.command_name }}
-
-      - name: Upload Built Jar File
-        uses: actions/upload-artifact@v3
-        with:
-          name: Minesweeper Jar v${{ env.APP_VERSION }}
-          if-no-files-found: error
-          path: jar/Minesweeper-${{ env.APP_VERSION }}.jar
 
       - name: Upload Built Native Image - ${{ matrix.os_name }}
         uses: actions/upload-artifact@v3
