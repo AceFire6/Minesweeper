@@ -60,7 +60,7 @@ jar: $(JARFILE_PATH)
 
 native-builds-dir: 
 	@if [ ! -d $(NATIVE_BUILDS_DIR) ]; then\
-		@echo Creating native builds dir $(NATIVE_BUILDS_DIR);\
+		echo Creating native builds dir $(NATIVE_BUILDS_DIR);\
 		mkdir $(NATIVE_BUILDS_DIR);\
 	fi
 
@@ -71,7 +71,7 @@ prep-package-native: jar native-builds-dir output-build-version
 
 package-native-linux: prep-package-native
 	@echo Creating native Linux package
-	@$(PACKAGE_COMMAND) --icon "./icons/icon.ico"
+	@$(PACKAGE_COMMAND) --icon "./icons/icon.png"
 
 package-native-windows: prep-package-native
 	@echo Creating native Windows package
