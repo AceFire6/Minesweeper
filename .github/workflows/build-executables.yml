@@ -59,11 +59,16 @@ jobs:
       - name: Build Native Executable
         run: make package-native-${{ matrix.command_name }}
 
-      - name: Upload Build Artifacts
+      - name: Upload Built Jar File
         uses: actions/upload-artifact@v3
         with:
-          name: Minesweeper v${{ env.APP_VERSION }}
+          name: Minesweeper Jar v${{ env.APP_VERSION }}
           if-no-files-found: error
-          path: |
-            jar/Minesweeper-${{ env.APP_VERSION }}.jar
-            builds/
+          path: jar/Minesweeper-${{ env.APP_VERSION }}.jar
+
+      - name: Upload Built Native Image - ${{ matrix.os_name }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Minesweeper ${{ matrix.os_name }} v${{ env.APP_VERSION }}
+          if-no-files-found: error
+          path: builds/
